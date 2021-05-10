@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GradeBook
 {
-    class Book
+    public class Book
     {
         public Book( string name) 
         {
@@ -16,36 +16,27 @@ namespace GradeBook
         {
             grades.Add(grade);
         }
-        public void ShowStats() {
+        public Statistics GetStatistics() 
+        {
+            var result = new Statistics();
             //ComputeAverage 
-            var highGrade = double.MinValue;
-            var lowGrade = double.MaxValue;
-            var result = 0.0;
+            result.High = double.MinValue;
+            result.Low = double.MaxValue;
+            result.Average = 0.0;
 
-            foreach (var number in grades)
+            foreach (var grade in grades)
             {
-                highGrade = Math.Max(number, highGrade);
-                lowGrade = Math.Min(number, lowGrade);
-                result += number;
+                result.High = Math.Max(grade, result.High);
+                result.Low = Math.Min(grade, result.Low);
+                result.Average += grade;
             }
-            result /= grades.Count;
+            result.Average /= grades.Count;
 
-            Console.WriteLine($"The averege grade is {result:N1}");
-            Console.WriteLine($"The max grade is {highGrade:N1}");
-            Console.WriteLine($"The lowest grade is {lowGrade:N1}");
+            return result;
 
-            //if (args.Length > 0)
-            //{
-            //    Console.WriteLine($"Hello, {args[0]} !");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Hello stainger!");
-            //}
         }
 
         private List<double> grades;
-        private string name;
 
     }
 }
