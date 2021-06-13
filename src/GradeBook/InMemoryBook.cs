@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,17 +9,60 @@ namespace GradeBook
 {
     public delegate void GradeAddDelegate(Object sender, EventArgs args);
 
-    public class NamedObject
-    { 
+    public abstract class NamedObject
+    {
+        public NamedObject(string name)
+        {
+            Name = name;
+        }
         public string Name
         {
             get;
             set;
         }
     }
-    public class Book
+
+    public interface IBook
     {
-        public Book( string name) 
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        string Name { get; }
+        event GradeAddDelegate GradeAdded;
+
+    }
+
+    //    public abstract class Book : NamedObject
+    //    {
+    //        //public Book(string name) : base(name)
+    //        { 
+    //        }
+    //    //public abstract void AddGrade(double grade);
+    //}
+
+    public class DiskBook : IBook
+    {
+        public DiskBook(string name) : base(name)
+        {
+        }
+
+        string IBook.Name => throw new NotImplementedException();
+
+        public event GradeAddDelegate GradeAdded;
+
+        public void AddGrade(double grade)
+        {
+            File.AppendText(1);
+        }
+
+        public Statistics GetStatistics()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class InMemoryBook : NamedObject, IBook
+    {
+        public InMemoryBook(string name) : base(name)
         {
             grades = new List<double>();
             Name = name;
