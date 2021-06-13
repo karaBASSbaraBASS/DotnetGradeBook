@@ -3,8 +3,34 @@ using Xunit;
 
 namespace GradeBook.Tests
 {
+    public delegate string WriteLogDelegate(string logMesage);
     public class TypeTests
     {
+        int count = 0;
+
+        [Fact]
+        public void WriteLogDelegateCanPointToMethod()
+        {
+            WriteLogDelegate log = ReturnMessage;
+
+            log += ReturnMessage;
+            log += IncrementCount;
+
+            var result = log("Hello");
+            Assert.Equal(3, count);
+        }
+
+        string ReturnMessage(string message)
+        {
+            count++;
+            return message;
+        }
+        string IncrementCount(string message)
+        {
+            count++;
+            return message.ToLower();
+        }
+
         Book GetBook(string name)
         {
             return new Book(name);
@@ -109,10 +135,11 @@ namespace GradeBook.Tests
         [Fact]
         public void CannotAddGradeBiggerThan100()
         {
-            var book1 = GetBook("book 1");
-            book1.AddGrade(105);
-
-            //Assert.DoesNotContain(book1.grades, 105);
+            var book1 = GetBook("book 1");           
+            var caughtException = Assert.Throws<ArgumentException>(() => book1.AddGrade(105.0));
+            Assert.Equal("Invalid grade", caughtException.Message);
         }
+
+
     }
 }
