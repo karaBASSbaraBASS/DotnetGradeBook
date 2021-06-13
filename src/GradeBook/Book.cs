@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace GradeBook
 {
-    public delegate void GradeAddDelegate(Object sender, EventArgs args); 
+    public delegate void GradeAddDelegate(Object sender, EventArgs args);
+
+    public class NamedObject
+    { 
+        public string Name
+        {
+            get;
+            set;
+        }
+    }
     public class Book
     {
         public Book( string name) 
@@ -105,11 +114,6 @@ namespace GradeBook
         }
 
         public List<double> grades;
-
-        public string Name
-        {
-            get; set;
-        }
         
         const string category = "Science";
 
